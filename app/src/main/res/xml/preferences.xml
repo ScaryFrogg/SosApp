@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Enable message notifications"/>
+        app:defaultValue="false"
+        app:key="sendOnStartUp"
+        app:summary="All your contacts will receive your SOS message when you launch app"
+        app:title="Send SOS on application start up" />
 
     <Preference
-        app:key="feedback"
-        app:title="Send feedback"
-        app:summary="Report technical issues or suggest new features"/>
+        android:key="addEmail"
+        android:summary="Add email to your list"
+        android:title="Add Email" />
+    <Preference
+        android:key="addPhone"
+        android:summary="Add phone number to your list"
+        android:title="Add Phone" />
+
 
 </PreferenceScreen>

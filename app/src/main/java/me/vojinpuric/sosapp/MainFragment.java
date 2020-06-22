@@ -1,6 +1,8 @@
 package me.vojinpuric.sosapp;
 
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,22 +46,25 @@ public class MainFragment extends Fragment {
 
         recyclerEmails = view.findViewById(R.id.recycler_emails);
         recyclerPhones = view.findViewById(R.id.recycler_phones);
-        enterEmail = view.findViewById(R.id.enter_email);
-        enterPhone = view.findViewById(R.id.enter_phone);
+//        enterEmail = view.findViewById(R.id.enter_email);
+//        enterPhone = view.findViewById(R.id.enter_phone);
 
         activity = (MainActivity) getActivity();
-        emails = activity.readPreferences(MainActivity.KEY_EMAILS);
-        phones = activity.readPreferences(MainActivity.KEY_SMS);
+        emails = activity.getEmails();
+        phones = activity.getPhones();
+        LocationService gps = ((MainActivity) activity).getGps();
 
         createAdapter(recyclerPhones, phones);
         createAdapter(recyclerEmails, emails);
-
-        view.findViewById(R.id.add_email).setOnClickListener(v->addEmail());
-        view.findViewById(R.id.add_phone).setOnClickListener(v->addPhone());
+//        view.findViewById(R.id.add_email).setOnClickListener(v -> addEmail());
+//        view.findViewById(R.id.add_phone).setOnClickListener(v -> addPhone());
         view.findViewById(R.id.sendAll).setOnClickListener(v -> {
-            for (String p : phones) {
-                (activity).sendSms(p, String.format("https://www.google.com/maps/place/%s+%s", "44.816472", "20.460111"));
-            }
+
+            gps.getLocation();
+
+            //            for (String p : phones) {
+//                (activity).sendSms(p, String.format("https://www.google.com/maps/place/%s+%s", "44.816472", "20.460111"));
+//            }
         });
 
     }
@@ -85,7 +90,7 @@ public class MainFragment extends Fragment {
         if (recyclerEmails.getAdapter() != null) {
             recyclerEmails.getAdapter().notifyDataSetChanged();
         }
-        activity.savePreferences(MainActivity.KEY_EMAILS,emails);
+        MainActivity.savePreferences(MainActivity.KEY_EMAILS, emails);
         enterEmail.setText("");
     }
 
@@ -99,7 +104,7 @@ public class MainFragment extends Fragment {
         if (recyclerPhones.getAdapter() != null) {
             recyclerPhones.getAdapter().notifyDataSetChanged();
         }
-        activity.savePreferences(MainActivity.KEY_SMS,phones);
+        MainActivity.savePreferences(MainActivity.KEY_SMS, phones);
         enterPhone.setText("");
     }
 
@@ -107,7 +112,7 @@ public class MainFragment extends Fragment {
         return new MainFragment();
     }
 }
-    //Swipe for Delete
+//Swipe for Delete
 //    ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 //        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
 //            return true;

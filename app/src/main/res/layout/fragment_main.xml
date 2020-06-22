@@ -10,10 +10,21 @@
         android:id="@+id/recycler_phones"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/enter_phone"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_emails"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_emails"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_phones" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -21,44 +32,44 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/sendAll"
-        app:layout_constraintGuide_percent="0.500684"
+        app:layout_constraintGuide_percent="0.6"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/add_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Phone"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!--    <Button-->
+    <!--        android:id="@+id/add_phone"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Add Phone"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/guideline3"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
-    <EditText
-        android:id="@+id/enter_phone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toStartOf="@+id/add_phone"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--    <EditText-->
+    <!--        android:id="@+id/enter_phone"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:ems="10"-->
+    <!--        android:inputType="phone"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/guideline3"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/add_phone"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
-    <EditText
-        android:id="@+id/enter_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="@+id/add_email"
-        app:layout_constraintEnd_toStartOf="@+id/add_email"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--    <EditText-->
+    <!--        android:id="@+id/enter_email"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:ems="10"-->
+    <!--        android:inputType="textEmailAddress"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/add_email"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/add_email"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
-    <Button
-        android:id="@+id/add_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Email"
-        app:layout_constraintBottom_toTopOf="@+id/sendAll"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!--    <Button-->
+    <!--        android:id="@+id/add_email"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Add Email"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/sendAll"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
     <Button
         android:id="@+id/sendAll"
@@ -67,14 +78,9 @@
         android:text="Send"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_emails"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/enter_email"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline3" />
+        app:layout_constraintTop_toBottomOf="@+id/recycler_emails" />
+
+    <!--        app:layout_constraintBottom_toTopOf="@+id/enter_email"-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
