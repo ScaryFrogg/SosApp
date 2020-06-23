@@ -50,8 +50,8 @@ public class MainFragment extends Fragment {
 //        enterPhone = view.findViewById(R.id.enter_phone);
 
         activity = (MainActivity) getActivity();
-        emails = activity.getEmails();
-        phones = activity.getPhones();
+        emails = MainActivity.getEmails();
+        phones = MainActivity.getPhones();
         LocationService gps = ((MainActivity) activity).getGps();
 
         createAdapter(recyclerPhones, phones);

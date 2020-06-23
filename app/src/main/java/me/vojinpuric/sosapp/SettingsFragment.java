@@ -8,11 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceFragmentCompat;
-
-
 import java.util.ArrayList;
 
-import static me.vojinpuric.sosapp.MainActivity.readPreferences;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -29,43 +26,42 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.preferences, rootKey);
         findPreference("addEmail").setOnPreferenceClickListener(preference -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this.requireContext());
-            View dialogView = LayoutInflater.from(this.getContext()).inflate(R.layout.dialog,null, false);
+            View dialogView = LayoutInflater.from(this.getContext()).inflate(R.layout.dialog, null, false);
             builder.setView(dialogView);
-            ((TextView)dialogView.findViewById(R.id.addTitle)).setText("Add Email address");
-            EditText editTextAdd =dialogView.findViewById(R.id.editTextAdd);
+            AlertDialog alertDialog = builder.create();
+            ((TextView) dialogView.findViewById(R.id.addTitle)).setText("Add Email address");
+            EditText editTextAdd = dialogView.findViewById(R.id.editTextAdd);
             editTextAdd.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-            dialogView.findViewById(R.id.button).setOnClickListener(v->{
-                if(!editTextAdd.getText().toString().equals("")) {
-                    ArrayList<String> added = readPreferences(MainActivity.KEY_EMAILS);
+            dialogView.findViewById(R.id.button).setOnClickListener(v -> {
+                if (!editTextAdd.getText().toString().equals("")) {
+                    ArrayList<String> added = MainActivity.getEmails();
                     added.add(editTextAdd.getText().toString());
-                    MainActivity.savePreferences(MainActivity.KEY_EMAILS,added);
+                    MainActivity.savePreferences(MainActivity.KEY_EMAILS, added);
                 }
                 editTextAdd.setText("");
+                alertDialog.dismiss();
             });
-            AlertDialog alertDialog = builder.create();
             alertDialog.show();
             return true;
         });
 
-
         findPreference("addPhone").setOnPreferenceClickListener(preference -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this.requireContext());
-            View dialogView = LayoutInflater.from(this.getContext()).inflate(R.layout.dialog,null, false);
+            View dialogView = LayoutInflater.from(this.getContext()).inflate(R.layout.dialog, null, false);
             builder.setView(dialogView);
-            ((TextView)dialogView.findViewById(R.id.addTitle)).setText("Add Phone number");
-            EditText editTextAdd =dialogView.findViewById(R.id.editTextAdd);
+            AlertDialog alertDialog = builder.create();
+            ((TextView) dialogView.findViewById(R.id.addTitle)).setText("Add Phone number");
+            EditText editTextAdd = dialogView.findViewById(R.id.editTextAdd);
             editTextAdd.setInputType(InputType.TYPE_CLASS_PHONE);
-            dialogView.findViewById(R.id.button).setOnClickListener(v->{
-
-                if(!editTextAdd.getText().toString().equals("")) {
-                    ArrayList<String> added = readPreferences(MainActivity.KEY_SMS);
+            dialogView.findViewById(R.id.button).setOnClickListener(v -> {
+                if (!editTextAdd.getText().toString().equals("")) {
+                    ArrayList<String> added = MainActivity.getPhones();
                     added.add(editTextAdd.getText().toString());
-                    MainActivity.savePreferences(MainActivity.KEY_SMS,added);
+                    MainActivity.savePreferences(MainActivity.KEY_SMS, added);
                 }
                 editTextAdd.setText("");
-
+                alertDialog.dismiss();
             });
-            AlertDialog alertDialog = builder.create();
             alertDialog.show();
             return true;
         });
