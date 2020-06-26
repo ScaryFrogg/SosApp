@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.regex.Pattern;
-
 
 public class EmailHelper {
     private Context context;
@@ -16,11 +14,11 @@ public class EmailHelper {
     private String lat;
     private String lon;
 
-    EmailHelper(Context context, String email, String lat, String lon) {
+    EmailHelper(Context context, String email, String lat, String lon, String trackingId) {
         this.context = context;
 
         if (isNetworkAvailable()) {
-            new RetrieveFeedback().execute(email, lat, lon);
+            new RetrieveFeedback().execute(email, lat, lon, trackingId);
         } else {
             Toast.makeText(context, "Please turn on your internet", Toast.LENGTH_SHORT).show();
         }
@@ -40,7 +38,7 @@ public class EmailHelper {
         @Override
         protected Void doInBackground(String... args) {
             try {
-                GMail androidEmail = new GMail(args[0], args[1], args[2]);
+                GMail androidEmail = new GMail(args[0], args[1], args[2], args[3]);
                 androidEmail.createEmailMessage();
                 androidEmail.sendEmail();
             } catch (Exception e) {

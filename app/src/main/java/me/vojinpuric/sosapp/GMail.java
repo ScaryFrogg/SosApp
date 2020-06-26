@@ -29,13 +29,13 @@ public class GMail {
     private MimeMessage emailMessage;
 
 
-    public GMail(String toEmail,String lat,String lon) {
+    public GMail(String toEmail,String lat,String lon, String trackingId) {
         this.toEmail = toEmail;
         lat = lat.replace("°","%C2%B0");
         lat = lat.replace("\"","%E2%80%9C");
         lon = lon.replace("°","%C2%B0");
         lon = lon.replace("\"","%%E2%80%9C");
-        this.emailBody = String.format("https://www.google.com/maps/place/%s+%s",lat,lon);
+        this.emailBody = String.format("My location is https://www.google.com/maps/place/%s+%s \n Link for tracking: http://192.168.0.111:8080/?id=%s", lat, lon ,trackingId);
         final String emailPort = "587";// gmail's smtp port
         final String smtpAuth = "true";
         final String starttls = "true";

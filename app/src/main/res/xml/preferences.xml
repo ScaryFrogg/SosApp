@@ -16,6 +16,14 @@
         android:key="addPhone"
         android:summary="Add phone number to your list"
         android:title="Add Phone" />
-
+    <Preference
+        android:key="removeContact"
+        android:summary="Enter email or number you want to remove"
+        android:title="Remove Contact" />
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:key="powerMenagment"
+        app:summary="Send less precise location"
+        app:title="Save Power" />
 
 </PreferenceScreen>
