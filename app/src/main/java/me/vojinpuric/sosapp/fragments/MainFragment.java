@@ -1,13 +1,10 @@
-package me.vojinpuric.sosapp;
+package me.vojinpuric.sosapp.fragments;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
+
+import me.vojinpuric.sosapp.MainActivity;
+import me.vojinpuric.sosapp.helpers.MyAdapter;
+import me.vojinpuric.sosapp.R;
+import me.vojinpuric.sosapp.service.LocationService;
 
 
 public class MainFragment extends Fragment {

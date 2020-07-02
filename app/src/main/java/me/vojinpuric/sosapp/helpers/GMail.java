@@ -1,4 +1,4 @@
-package me.vojinpuric.sosapp;
+package me.vojinpuric.sosapp.helpers;
 
 import android.util.Log;
 

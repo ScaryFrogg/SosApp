@@ -1,4 +1,4 @@
-package me.vojinpuric.sosapp;
+package me.vojinpuric.sosapp.fragments;
 
 import android.os.Bundle;
 import android.text.InputType;
@@ -14,6 +14,9 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import me.vojinpuric.sosapp.MainActivity;
+import me.vojinpuric.sosapp.R;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat {

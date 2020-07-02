@@ -1,9 +1,11 @@
-package me.vojinpuric.sosapp;
+package me.vojinpuric.sosapp.service;
 
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -26,11 +28,12 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 
+import me.vojinpuric.sosapp.helpers.EmailHelper;
+import me.vojinpuric.sosapp.MainActivity;
+import me.vojinpuric.sosapp.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
@@ -38,6 +41,7 @@ public class LocationService extends Service {
     public static final String KEY_EMAILS = "service_emails_key";
     public static final String KEY_SMS = "service_sms_key";
     public static final String CHANNEL_ID = "NOTIFICATION_CHANNEL_ID";
+    public static final String STOP_ACTION = "STOP_SENDING";
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private SmsManager smsManager;
@@ -52,12 +56,17 @@ public class LocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent.getAction().equals(STOP_ACTION)) {
+            stopSelf();
+        }
         smsManager = SmsManager.getDefault();
         phones = intent.getStringArrayListExtra(KEY_SMS);
         emails = intent.getStringArrayListExtra(KEY_EMAILS);
 
         buildLocationRequest();
+
         return super.onStartCommand(intent, flags, startId);
+
     }
 
     @Override
@@ -67,31 +76,30 @@ public class LocationService extends Service {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
-                String locationString = new StringBuilder("" + location.getLatitude())
-                        .append("/")
-                        .append(location.getLongitude())
-                        .toString();
-                Toast.makeText(getBaseContext(), locationString, Toast.LENGTH_LONG).show();
+//                String locationString = new StringBuilder("" + location.getLatitude())
+//                        .append("/")
+//                        .append(location.getLongitude())
+//                        .toString();
+//                Toast.makeText(getBaseContext(), locationString, Toast.LENGTH_LONG).show();
 
                 SendToServerService service = RetrofitClientInstance.getRetrofitInstance().create(SendToServerService.class);
                 service.postToServer(location.getLatitude() + "," + location.getLongitude() + "," + MainActivity.getUserId()).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Log.e("Retrofit", "successs");
-                        Log.e("Retrofit", "response" + response.message());
+                        //Log.e("Retrofit", "successs response" + response.message());
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("Retrofit", "failure");
-                        t.printStackTrace();
+//                        Log.e("Retrofit", "failure");
+//                        t.printStackTrace();
                     }
                 });
                 sendSos("" + location.getLatitude(), "" + location.getLongitude(), emails, phones , MainActivity.getUserId());
             }
         };
 
-        moveToForeground();
+        moveToForeground(this);
     }
 
     /***
@@ -110,7 +118,7 @@ public class LocationService extends Service {
     //ProSmart http://192.168.0.111:8080/api
 
 
-    private void moveToForeground() {
+    private void moveToForeground(Context service) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = ("R.string.channel_name");
             String description = ("R.string.channel_description");
@@ -120,10 +128,14 @@ public class LocationService extends Service {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+        Intent stopIntent = new Intent(service,LocationService.class);
+        stopIntent.setAction(STOP_ACTION);
 
         startForeground(1, new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Your location is being Tracked")
-                .setContentText("Your location is being Sent")
+                .setContentText("Tap this notification sto stop tracking")
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentIntent(PendingIntent.getService(service,0,stopIntent,0))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT).build()
         );
     }
@@ -166,21 +178,5 @@ public class LocationService extends Service {
         super.onDestroy();
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
-    }
-}
-
-class RetrofitClientInstance {
-
-    private static Retrofit retrofit;
-    private static final String BASE_URL = "https://jsonplaceholder.typicode.com";
-
-    public static Retrofit getRetrofitInstance() {
-        if (retrofit == null) {
-            retrofit = new retrofit2.Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return retrofit;
     }
 }

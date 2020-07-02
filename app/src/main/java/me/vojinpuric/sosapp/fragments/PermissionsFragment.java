@@ -1,4 +1,4 @@
-package me.vojinpuric.sosapp;
+package me.vojinpuric.sosapp.fragments;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -18,6 +18,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
+
+import me.vojinpuric.sosapp.MainActivity;
+import me.vojinpuric.sosapp.R;
 
 public class PermissionsFragment extends Fragment {
 

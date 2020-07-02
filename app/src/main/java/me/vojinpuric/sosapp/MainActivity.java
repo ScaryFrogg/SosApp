@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import me.vojinpuric.sosapp.fragments.MainFragment;
+import me.vojinpuric.sosapp.fragments.PermissionsFragment;
+import me.vojinpuric.sosapp.fragments.SettingsFragment;
+import me.vojinpuric.sosapp.service.LocationService;
+
 //TODO bolja poruka
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         serviceIntent = new Intent(this, LocationService.class);
+        serviceIntent.setAction("START");
         prefs = getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         userId = getId();
         emails = readPreferences(MainActivity.KEY_EMAILS);
