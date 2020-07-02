@@ -29,7 +29,7 @@ import me.vojinpuric.sosapp.fragments.PermissionsFragment;
 import me.vojinpuric.sosapp.fragments.SettingsFragment;
 import me.vojinpuric.sosapp.service.LocationService;
 
-//TODO bolja poruka
+//TODO manifest network config
 
 public class MainActivity extends AppCompatActivity {
     private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         Dexter.withContext(this)
                 .withPermissions(
                         Manifest.permission.SEND_SMS,
-                        //Manifest.permission.ACCESS_BACKGROUND_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION
                 ).withListener(new MultiplePermissionsListener() {
             @Override
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         serviceIntent.putStringArrayListExtra(LocationService.KEY_SMS, phones);
                         serviceIntent.putStringArrayListExtra(LocationService.KEY_EMAILS, emails);
                         startService(serviceIntent);
-                    }else{
+                    } else {
                         stopService(serviceIntent);
                     }
                     navigate(MainFragment.newInstance());
@@ -89,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
         }).check();
     }
 
-    public static String getUserId() { return userId; }
+    public static String getUserId() {
+        return userId;
+    }
 
     public static Intent getTrackingServiceIntent() {
         return serviceIntent;
@@ -112,14 +113,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_settings: {
-                navigate(SettingsFragment.newInstance());
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.menu_settings) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame, SettingsFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -133,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void savePreferences(String key, ArrayList<String> list) {
-        StringBuilder sb = new StringBuilder("");
-        if(list.size()>0){
+        StringBuilder sb = new StringBuilder();
+        if (list.size() > 0) {
             sb.append(list.get(0));
             int i = 1;
             while (i < list.size()) {
@@ -155,9 +157,10 @@ public class MainActivity extends AppCompatActivity {
         } else
             return new ArrayList<>(Arrays.asList(listAsText.split("###")));
     }
-    private String getId(){
-        String check = prefs.getString(KEY_SERVER_ID,"");
-        if(check.equals("")){
+
+    private String getId() {
+        String check = prefs.getString(KEY_SERVER_ID, "");
+        if (check.equals("")) {
             String generatedId = generateId();
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(KEY_SERVER_ID, generatedId);
@@ -171,16 +174,16 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder builder = new StringBuilder();
         int count = 11;
         while (count-- != 0) {
-            int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+            int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
             builder.append(ALPHA_NUMERIC_STRING.charAt(character));
         }
         return builder.toString();
     }
+
     public void navigate(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame, fragment)
-                .addToBackStack(null)
                 .commit();
     }
 }

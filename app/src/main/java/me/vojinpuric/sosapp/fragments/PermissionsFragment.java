@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,13 +49,12 @@ public class PermissionsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.btnEnable).setOnClickListener(v -> Dexter.withContext(getContext()).withPermissions(
                 Manifest.permission.SEND_SMS,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
         ).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
-                if(report.areAllPermissionsGranted()) {
-                    ((MainActivity)getActivity()).navigate(MainFragment.newInstance());
+                if (report.areAllPermissionsGranted()) {
+                    ((MainActivity) getActivity()).navigate(MainFragment.newInstance());
                 }
             }
 

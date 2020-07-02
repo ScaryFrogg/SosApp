@@ -107,6 +107,17 @@
     <!--        app:layout_constraintBottom_toTopOf="@+id/sendAll"-->
     <!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
+    <TextView
+        android:id="@+id/tvNoContacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="You need to add contacts before you can use the app"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/sendAll"
         android:layout_width="wrap_content"

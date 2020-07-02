@@ -2,6 +2,7 @@ package me.vojinpuric.sosapp.fragments;
 
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +42,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             EditText editTextAdd = dialogView.findViewById(R.id.editTextAdd);
             editTextAdd.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             dialogView.findViewById(R.id.button).setOnClickListener(v -> {
-                String email = editTextAdd.getText().toString();
+                String email = editTextAdd.getText().toString().toLowerCase().trim();
                 if (!email.equals("")) {
                     ArrayList<String> added = MainActivity.getEmails();
                     String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -90,24 +91,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             Button button = dialogView.findViewById(R.id.button);
             button.setText("Remove");
             button.setOnClickListener(v -> {
-                String text =editTextAdd.getText().toString();
+                String text = editTextAdd.getText().toString().toLowerCase().trim();
                 if (!text.equals("")) {
                     ArrayList<String> phones = MainActivity.getPhones();
                     ArrayList<String> emails = MainActivity.getEmails();
-                    ArrayList<String> phonesCopy = phones;
-                    for (String phone:phones) {
-                        if(phone.equals(text)){
-                            phonesCopy.remove(phone);
-                        }
+                    if (phones.remove(text)) {
+                        Toast.makeText(getContext(), "Number removed", Toast.LENGTH_LONG).show();
                     }
-                    ArrayList<String> emailsCopy = emails;
-                    for (String email:emails) {
-                        if(email.equals(text)){
-                            emails.remove(email);
-                        }
+                    if (emails.remove(text)) {
+                        Toast.makeText(getContext(), "Email removed", Toast.LENGTH_LONG).show();
                     }
-                    MainActivity.savePreferences(MainActivity.KEY_EMAILS, emailsCopy);
-                    MainActivity.savePreferences(MainActivity.KEY_SMS, phonesCopy);
+                    MainActivity.savePreferences(MainActivity.KEY_EMAILS, emails);
+                    MainActivity.savePreferences(MainActivity.KEY_SMS, phones);
                 }
                 editTextAdd.setText("");
                 alertDialog.dismiss();

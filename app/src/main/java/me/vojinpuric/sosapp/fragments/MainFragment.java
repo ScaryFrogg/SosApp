@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,19 +24,16 @@ import me.vojinpuric.sosapp.service.LocationService;
 
 public class MainFragment extends Fragment {
 
-    private RecyclerView recyclerEmails;
-    private RecyclerView recyclerPhones;
     private ArrayList<String> phones;
     private ArrayList<String> emails;
+    private Button sendBtn;
+    private TextView tvNoContacts;
 
     public MainFragment() {
-        // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -42,19 +41,35 @@ public class MainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerEmails = view.findViewById(R.id.recycler_emails);
-        recyclerPhones = view.findViewById(R.id.recycler_phones);
+        RecyclerView recyclerEmails = view.findViewById(R.id.recycler_emails);
+        RecyclerView recyclerPhones = view.findViewById(R.id.recycler_phones);
+        sendBtn = view.findViewById(R.id.sendAll);
+        tvNoContacts = view.findViewById(R.id.tvNoContacts);
         emails = MainActivity.getEmails();
         phones = MainActivity.getPhones();
         createAdapter(recyclerPhones, phones);
         createAdapter(recyclerEmails, emails);
-        view.findViewById(R.id.sendAll).setOnClickListener(v -> {
+
+        sendBtn.setOnClickListener(v -> {
             Intent serviceIntent = ((MainActivity) getActivity()).getTrackingServiceIntent();
             serviceIntent.putStringArrayListExtra(LocationService.KEY_SMS, MainActivity.getPhones());
             serviceIntent.putStringArrayListExtra(LocationService.KEY_EMAILS, MainActivity.getEmails());
             getContext().startService(serviceIntent);
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (phones.isEmpty() && emails.isEmpty()) {
+            tvNoContacts.setVisibility(View.VISIBLE);
+            sendBtn.setEnabled(false);
+        } else {
+            tvNoContacts.setVisibility(View.GONE);
+            sendBtn.setEnabled(true);
+        }
     }
 
     private void createAdapter(RecyclerView recyclerView, ArrayList<String> list) {
